@@ -1,6 +1,6 @@
 CREATE TABLE github_data (
   id SERIAL PRIMARY KEY,               
-  issue_id INT NOT NULL,              
+  issue_id TEXT NOT NULL,              
   title TEXT NOT NULL,                 
   state TEXT NOT NULL,                 
   created_at TIMESTAMP NOT NULL,      
@@ -8,7 +8,7 @@ CREATE TABLE github_data (
   resolution_time_days INT,           
   priority TEXT,                     
   milestone TEXT,                      
-  author TEXT NOT NULL,               
+  author TEXT,               
   assignee TEXT,                       
   related_topic TEXT                  
 );
