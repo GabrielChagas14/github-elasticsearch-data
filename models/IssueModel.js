@@ -1,4 +1,4 @@
-const pool = require('../dbConnection');
+import pool from '../dbConnection.js';
 
 class IssueModel {
     async insertIssue(issue) {
@@ -8,9 +8,15 @@ class IssueModel {
         );
     }
 
+    getIssues() {
+        return pool.query(`SELECT i.issue_id, i.title as issue_title, i.body as issue_body FROM issue i
+             WHERE i.issue_id = '2505599426'
+             `);
+    }
+
     async clearTable() {
         await pool.query('DELETE FROM issue');
     }
 }
 
-module.exports = new IssueModel();
+export default new IssueModel();

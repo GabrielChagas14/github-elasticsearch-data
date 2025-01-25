@@ -1,4 +1,4 @@
-const pool = require('../dbConnection');
+import pool from '../dbConnection.js';
 
 class CommentModel {
     async insertComment(comment) {
@@ -8,6 +8,12 @@ class CommentModel {
             [comment.comment_id, comment.issue_id, comment.author, comment.body, comment.created_at, comment.url]
         );
     }
+
+    getComments(issue_id) {
+        return pool.query(`SELECT c.comment_id, c.body as comment_body FROM comment c
+             WHERE c.issue_id = $1
+             `, [issue_id]);
+    }
 }
 
-module.exports = new CommentModel();
+export default new CommentModel();

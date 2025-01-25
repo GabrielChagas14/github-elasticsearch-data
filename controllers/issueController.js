@@ -1,7 +1,7 @@
-const axios = require('axios');
-const issueModel = require('../models/IssueModel.js');
-const commentController = require('./commentController.js');
-const issueLabelController = require('./issuelabelController.js');
+import axios from 'axios';
+import issueModel from '../models/IssueModel.js';
+import commentController from './commentController.js';
+import issueLabelController from './issuelabelController.js';
 
 class IssueController {
     async fetchIssues(page) {
@@ -14,18 +14,11 @@ class IssueController {
                     per_page: 100,
                     page: page,
                     state: 'closed',    
-                    labels: '>bug',   
+                    labels: '>refactoring',   
                 },
             });
             
             for (const issue of response.data) {
-
-                  // Filtra apenas issues (exclui pull requests)
-              /*   if (issue.pull_request) {
-                    console.log(`Ignorando pull request #${issue.id}`);
-                    continue;
-                } */
-
                 await issueModel.insertIssue({
                     id: issue.id,
                     title: issue.title,
@@ -52,6 +45,10 @@ class IssueController {
         }
     }
 
+    getIssues() {
+        return issueModel.getIssues();
+    }
+
     calculateResolutionTimeDays(created_at, closed_at) {
         const createdAt = new Date(created_at);
         const closedAt = new Date(closed_at);
@@ -75,4 +72,4 @@ class IssueController {
     }
 }
 
-module.exports = new IssueController();
+export default new IssueController();

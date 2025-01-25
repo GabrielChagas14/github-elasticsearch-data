@@ -1,5 +1,5 @@
-const axios = require('axios');
-const commentModel = require('../models/CommentModel.js');
+import axios from 'axios';
+import commentModel from '../models/CommentModel.js';
 
 class CommentController {
     async fetchComments(comments_url, issue_id) {
@@ -26,6 +26,10 @@ class CommentController {
             console.error(`Erro ao buscar comentários da issue ${issue_id}:`, error);
         }
     }
+
+    getComments(issue_id) {
+        return commentModel.getComments(issue_id);
+    }
 }
 
-module.exports = new CommentController();
+export default new CommentController();

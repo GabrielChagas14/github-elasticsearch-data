@@ -1,4 +1,4 @@
-const issueLabelModel = require('../models/IssueLabelModel.js');
+import issueLabelModel from '../models/IssueLabelModel.js';
 
 class IssueLabelController {
     async insertIssueLabel(issueLabel) {
@@ -18,4 +18,4 @@ class IssueLabelController {
     }
 }
 
-module.exports = new IssueLabelController();
+export default new IssueLabelController();

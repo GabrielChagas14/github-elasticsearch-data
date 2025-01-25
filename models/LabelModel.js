@@ -1,4 +1,4 @@
-const pool = require('../dbConnection');
+import pool from '../dbConnection.js';
 
 class LabelModel {
     async insertLabel(label) {
@@ -13,4 +13,4 @@ class LabelModel {
     }
 }
 
-module.exports = new LabelModel();
+export default new LabelModel();

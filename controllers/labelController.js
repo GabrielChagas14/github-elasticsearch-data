@@ -1,5 +1,5 @@
-const axios = require('axios');
-const labelModel = require('../models/LabelModel.js');
+import axios from 'axios';
+import labelModel from '../models/LabelModel.js';
 
 class LabelController {
     async fetchLabels() {
@@ -42,4 +42,4 @@ class LabelController {
     }
 }
 
-module.exports = new LabelController();
+export default new LabelController();
