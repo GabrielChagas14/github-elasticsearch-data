@@ -1,5 +1,7 @@
 const axios = require('axios');
-const issueModel = require('./IssueModel.js');
+const issueModel = require('../models/IssueModel.js');
+const commentController = require('./commentController.js');
+const issueLabelController = require('./issuelabelController.js');
 
 class IssueController {
     async fetchIssues(page) {
@@ -17,6 +19,13 @@ class IssueController {
             });
             
             for (const issue of response.data) {
+
+                  // Filtra apenas issues (exclui pull requests)
+              /*   if (issue.pull_request) {
+                    console.log(`Ignorando pull request #${issue.id}`);
+                    continue;
+                } */
+
                 await issueModel.insertIssue({
                     id: issue.id,
                     title: issue.title,
@@ -26,11 +35,18 @@ class IssueController {
                     assignee: issue.assignee ?  issue.assignee.login : null,
                     priority: this.handlePriorityLabels(issue.labels),
                     resolution_time_days: this.calculateResolutionTimeDays(issue.created_at, issue.closed_at),
+                    body: issue.body,
                     created_at: issue.created_at,
                     closed_at: issue.closed_at,
                 });
+
+                this.saveIssueLabels(issue.labels, issue.id);
+
+                // Chamar o CommentController para buscar comentários
+                await commentController.fetchComments(issue.comments_url, issue.id);
             }
-            console.log('Issues inseridas com sucesso!');
+
+            console.log('Issues e comentários inseridos com sucesso!');
         } catch (error) {
             console.error('Erro ao buscar as issues:', error);
         }
@@ -47,6 +63,15 @@ class IssueController {
             ['priority:high', 'priority:normal', 'priority:critical'].includes(label.name)
         );
         return priorityLabel ? priorityLabel.name.split(':')[1] : 'low';
+    }
+
+    saveIssueLabels(labels, issueId) {
+        for (const label of labels) {
+            issueLabelController.insertIssueLabel({
+                issue_id: issueId,
+                label_id: label.id,
+            });
+        }
     }
 }
 
