@@ -1,11 +1,19 @@
-import LlamaAI from 'llamaai';
 import dotenv from 'dotenv';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import issueController from './controllers/issueController.js';
 import commentController from './controllers/commentController.js';
 import labelController from './controllers/labelController.js';
 
 const main = async () => {
   /* seedDatabase(); */
+
+  const genAI = new GoogleGenerativeAI(process.env.GEMINI_TOKEN);
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  
+  const prompt = "qual o último álbum da beyoncé";
+  
+  const result = await model.generateContent(prompt);
+  console.log(result.response.text());
 
   // Pega as issues e comentários
   const issues = await issueController.getIssues();
