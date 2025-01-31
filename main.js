@@ -1,15 +1,14 @@
-import LlamaAI from 'llamaai';
 import dotenv from 'dotenv';
 import issueController from './controllers/issueController.js';
 import commentController from './controllers/commentController.js';
 import labelController from './controllers/labelController.js';
 
 const main = async () => {
-  /* seedDatabase(); */
+  seedDatabase();
 
   // Pega as issues e comentários
-  const issues = await issueController.getIssues();
-  const comments = await commentController.getComments(issues.rows[0].issue_id);
+  /* const issues = await issueController.getIssues();
+  const comments = await commentController.getComments(issues.rows[0].issue_id); */
 
 };
 
@@ -20,9 +19,10 @@ const commentsJoin = (comments) => {
 
 const seedDatabase = async () => {
   await labelController.fetchLabels();
-  await issueController.fetchIssues(1);
-  await issueController.fetchIssues(2);
-  await issueController.fetchIssues(3);
+  await issueController.fetchIssues(1, '>refactoring');
+  await issueController.fetchIssues(1, '>test');
+  await issueController.fetchIssues(2, '>test');
+  await issueController.fetchIssues(3, '>test');
 };
 
 main();

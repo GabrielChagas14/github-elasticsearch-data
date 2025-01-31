@@ -8,10 +8,9 @@ class IssueModel {
         );
     }
 
-    getIssues() {
-        return pool.query(`SELECT i.issue_id, i.title as issue_title, i.body as issue_body FROM issue i
-             WHERE i.issue_id = '2505599426'
-             `);
+    async issueExists(issueId) {
+        const result = await pool.query(`SELECT issue_id FROM issue WHERE issue_id = $1`, [issueId]);
+        return result.rowCount > 0;
     }
 
     async clearTable() {
