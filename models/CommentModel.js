@@ -10,9 +10,19 @@ class CommentModel {
     }
 
     getComments(issue_id) {
-        return pool.query(`SELECT c.comment_id, c.body as comment_body FROM comment c
-             WHERE c.issue_id = $1
-             `, [issue_id]);
+        try {
+            const result = pool.query(
+                `SELECT c.comment_id, c.author, c.body AS comment_body 
+                 FROM comment c
+                 WHERE c.issue_id = $1`, 
+                [issue_id]
+            );
+    
+            return result; // Retorna apenas os comentários como array
+        } catch (error) {
+            console.error("Error fetching comments:", error);
+            return []; // Retorna um array vazio para evitar erro no .map()
+        }
     }
 }
 

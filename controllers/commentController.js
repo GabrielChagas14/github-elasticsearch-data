@@ -27,9 +27,23 @@ class CommentController {
         }
     }
 
-    getComments(issue_id) {
-        return commentModel.getComments(issue_id);
+     async getComments(issue_id) {
+        
+            const commentsObject = await commentModel.getComments(issue_id);
+            if (!commentsObject || commentsObject.length === 0) {
+                return "No comments available."; // Retorno seguro se não houver comentários
+            }
+            
+            const comments = commentsObject.rows;
+            
+            return comments.map(comment => 
+                `author: ${comment.author}\ncomment: ${comment.comment_body}`
+            ).join('\n\n');
+    
     }
+    
+
+
 }
 
 export default new CommentController();

@@ -11,6 +11,7 @@ CREATE TABLE issue (
   author TEXT,               
   assignee TEXT,                       
   related_topic TEXT
+  analysis TEXT;
 );
 
 CREATE TABLE label (

@@ -12,9 +12,15 @@ class IssueModel {
         const result = await pool.query(`SELECT issue_id FROM issue WHERE issue_id = $1`, [issueId]);
         return result.rowCount > 0;
     }
+    async getIssues(issueId) {
+        return await pool.query(`SELECT * FROM issue WHERE issue_id = $1`, [issueId]);
+    }
 
     async clearTable() {
         await pool.query('DELETE FROM issue');
+    }
+    async updateClassification(issueId, related_topic, analysis) {
+        await pool.query('UPDATE issue SET related_topic = $1, analysis = $2 WHERE issue_id = $3', [related_topic, analysis, issueId]);
     }
 }
 

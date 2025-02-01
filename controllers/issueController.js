@@ -1,4 +1,5 @@
 import axios from 'axios';
+import promptTemplate from '../services/promptTemplate.js';
 import issueModel from '../models/IssueModel.js';
 import commentController from './commentController.js';
 import issueLabelController from './issuelabelController.js';
@@ -74,6 +75,44 @@ class IssueController {
                 issue_id: issueId,
                 label_id: label.id,
             });
+        }
+    }
+    async createPrompt(issueId) {
+        try {
+            const issueObject = await issueModel.getIssues(issueId);
+            const issue = issueObject.rows[0];
+           
+            const comments = await commentController.getComments(issue.issue_id);
+            const labels = await issueLabelController.getLabels(issue.issue_id);
+    
+            const prompt = promptTemplate
+                .replace("{{title}}", issue.title)
+                .replace("{{description}}", issue.body)
+                .replace("{{comments}}", comments)
+                .replace("{{labels}}", labels);
+                
+            return prompt.trim();
+        } catch (error) {
+            console.error("Error creating prompt:", error);
+            return null;
+        }
+    }
+    getRelatedTopic(analysis) {
+        const related_topics = ['Refactoring', 'Regression Testing', 'Both', 'None'];
+        const firstLine = analysis.split("\n")[0].trim();
+    
+        // Verifica qual classificação está na primeira linha
+        const related_topic = related_topics.find(c => firstLine.includes(c));
+        return related_topic || 'None'; // Caso não encontre, retorna 'None'
+    }
+    async updadeClassification(issueId, analysis) {
+        try {
+            const related_topic = await this.getRelatedTopic(analysis);
+            await issueModel.updateClassification(issueId, related_topic, analysis);
+
+            console.log(`Classificação da issue ${issueId} atualizada com sucesso!`);
+        } catch (error) {
+            console.error("Erro ao atualizar classificação da issue:", error);
         }
     }
 }
