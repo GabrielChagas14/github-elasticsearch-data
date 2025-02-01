@@ -6,12 +6,25 @@ import geminiService from './services/geminiService.js';
 const main = async () => {
  /*  seedDatabase(); */
 
-  
- const prompt = await issueController.createPrompt("2742896629");
- const response = await geminiService.generateResponse(prompt);
- await issueController.updadeClassification("2742896629", response);
- console.log(response);
+ const prompts = await issueController.createPrompts();
+ await updateIssuesClassification(prompts);
+ 
+};
 
+const updateIssuesClassification = async (prompts) => {
+  for (let i = 0; i < prompts.length; i += 15) {
+      const batch = prompts.slice(i, i + 15);
+      await Promise.all(batch.map(async (promptData) => {
+          const response = await geminiService.generateResponse(promptData.prompt);
+          await issueController.updateClassification(promptData.issue_id, response);
+      }));
+      
+
+      if (i + 15 < prompts.length) {
+          console.log("Waiting for 1 minute...");
+          await new Promise(resolve => setTimeout(resolve, 60000)); 
+      }
+  }
 };
 
 const seedDatabase = async () => {

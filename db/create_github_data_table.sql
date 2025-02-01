@@ -10,8 +10,8 @@ CREATE TABLE issue (
   milestone TEXT,                      
   author TEXT,               
   assignee TEXT,                       
-  related_topic TEXT
-  analysis TEXT;
+  related_topic TEXT,
+  analysis TEXT
 );
 
 CREATE TABLE label (

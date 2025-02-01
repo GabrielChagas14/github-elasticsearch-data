@@ -77,26 +77,37 @@ class IssueController {
             });
         }
     }
-    async createPrompt(issueId) {
+ 
+
+    async createPrompts() {
         try {
-            const issueObject = await issueModel.getIssues(issueId);
-            const issue = issueObject.rows[0];
-           
-            const comments = await commentController.getComments(issue.issue_id);
-            const labels = await issueLabelController.getLabels(issue.issue_id);
+            // Obtém todas as issues
+            const issuesObject = await issueModel.getAllIssues();  // Método que busca todas as issues
+            const issues = issuesObject.rows;
     
-            const prompt = promptTemplate
-                .replace("{{title}}", issue.title)
-                .replace("{{description}}", issue.body)
-                .replace("{{comments}}", comments)
-                .replace("{{labels}}", labels);
-                
-            return prompt.trim();
+            // Faz todas as requisições de comentários e labels em paralelo
+            const prompts = await Promise.all(issues.map(async (issue) => {
+                const comments = await commentController.getComments(issue.issue_id);  // Requisição de comentários
+                const labels = await issueLabelController.getLabels(issue.issue_id);  // Requisição de labels
+    
+                // Geração do prompt para cada issue
+                const prompt = promptTemplate
+                    .replace("{{title}}", issue.title)
+                    .replace("{{description}}", issue.body)
+                    .replace("{{comments}}", comments)
+                    .replace("{{labels}}", labels);
+                    
+                // Retorna um objeto com o issue_id como chave e o prompt como valor
+                return { issue_id: issue.issue_id, prompt: prompt.trim() };
+            }));
+    
+            return prompts;  // Retorna o vetor de objetos com issue_id e prompt
         } catch (error) {
-            console.error("Error creating prompt:", error);
+            console.error("Error creating prompts:", error);
             return null;
         }
     }
+
     getRelatedTopic(analysis) {
         const related_topics = ['Refactoring', 'Regression Testing', 'Both', 'None'];
         const firstLine = analysis.split("\n")[0].trim();
@@ -105,7 +116,7 @@ class IssueController {
         const related_topic = related_topics.find(c => firstLine.includes(c));
         return related_topic || 'None'; // Caso não encontre, retorna 'None'
     }
-    async updadeClassification(issueId, analysis) {
+    async updateClassification(issueId, analysis) {
         try {
             const related_topic = await this.getRelatedTopic(analysis);
             await issueModel.updateClassification(issueId, related_topic, analysis);

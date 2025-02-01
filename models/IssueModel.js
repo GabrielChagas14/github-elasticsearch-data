@@ -12,8 +12,15 @@ class IssueModel {
         const result = await pool.query(`SELECT issue_id FROM issue WHERE issue_id = $1`, [issueId]);
         return result.rowCount > 0;
     }
-    async getIssues(issueId) {
-        return await pool.query(`SELECT * FROM issue WHERE issue_id = $1`, [issueId]);
+    async getAllIssues() {
+        try {
+            const query = 'SELECT * FROM issue';
+            const result = await pool.query(query);
+            return result;
+        } catch (error) {
+            console.error('Error fetching all issues:', error);
+            throw error;
+        }
     }
 
     async clearTable() {
