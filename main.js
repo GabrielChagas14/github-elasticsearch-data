@@ -8,7 +8,7 @@ const main = async () => {
  /* const prompts = await issueController.createPrompts();
  await updateIssuesClassification(prompts); */
 
- startServer.startServer();
+ startServer();
  
 };
 

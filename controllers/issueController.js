@@ -52,24 +52,25 @@ class IssueController {
     }
     
 
-    getIssues() {
-       /*  const issuesObject = issueModel.getAllIssues();
-        const issues = issuesObject.rows;
-        issueJson = issues.map(issue => {  
-            return {
-                    issue_id: issue.issue_id,
-                    title: issue.title,
-                    body: issue.body,
-                    status: issue.status,
-                }
-    }); */
+    getIssues(req, res) {
+        // const issuesObject = issueModel.getAllIssues();
+        // const issues = issuesObject.rows;
+
+        // const issueJson = issues.map(issue => {  
+        //     return {
+        //             issue_id: issue.issue_id,
+        //             title: issue.title,
+        //             body: issue.body,
+        //             status: issue.status,
+        //         }
+        // });
     const issues = [
         { id: 1, title: 'Issue 1', description: 'Descrição da issue 1' },
         { id: 2, title: 'Issue 2', description: 'Descrição da issue 2' }
       ];
     
         
-        return issues;
+        res.json(issueJson);
     }
 
     calculateResolutionTimeDays(created_at, closed_at) {
