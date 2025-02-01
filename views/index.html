@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sobre o Projeto</h1>
+    <p>Descrição breve do projeto...</p>
+
+    <h2>Lista de Issues</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Descrição</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="issuesTable">
+            <!-- Os dados das issues serão inseridos aqui via JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        async function fetchIssues() {
+            try {
+                const response = await fetch('/api/issues');
+                const issues = await response.json();
+                const tableBody = document.getElementById('issuesTable');
+                tableBody.innerHTML = '';
+
+                issues.forEach(issue => {
+                    const row = `
+                        <tr>
+                            <td>${issue.id}</td>
+                            <td>${issue.title}</td>
+                            <td>${issue.body}</td>
+                            <td>${issue.status}</td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            } catch (error) {
+                console.error('Erro ao carregar issues:', error);
+            }
+        }
+
+        fetchIssues(); // Chama a função ao carregar a página
+    </script>
+</body>
+</html>

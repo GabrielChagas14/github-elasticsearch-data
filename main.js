@@ -1,13 +1,14 @@
 import issueController from './controllers/issueController.js';
-import commentController from './controllers/commentController.js';
 import labelController from './controllers/labelController.js';
 import geminiService from './services/geminiService.js';
+import startServer  from './server.js';
 
 const main = async () => {
  /*  seedDatabase(); */
+ /* const prompts = await issueController.createPrompts();
+ await updateIssuesClassification(prompts); */
 
- const prompts = await issueController.createPrompts();
- await updateIssuesClassification(prompts);
+ startServer.startServer();
  
 };
 
