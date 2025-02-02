@@ -62,7 +62,7 @@ class IssueController {
                         issue_id: issue.issue_id,
                         title: issue.title,
                         body: issue.body,
-                        status: issue.analysis,
+                        related_topic: issue.related_topic,
                     }
             });
         

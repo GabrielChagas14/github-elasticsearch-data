@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Landing Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         table {
             width: 100%;
@@ -14,14 +15,21 @@
             padding: 8px;
             text-align: left;
         }
+        #myChart {
+            max-width: 300px;
+            max-height: 300px;
+        }
     </style>
 </head>
 <body>
     <h1>Sobre o Projeto</h1>
     <p>Descrição breve do projeto...</p>
 
+    <h2>Resultados encontrados</h2>
+    <canvas id="myChart"></canvas>
+
     <h2>Lista de Issues</h2>
-    <table>
+   <!--  <table>
         <thead>
             <tr>
                 <th>ID</th>
@@ -31,16 +39,15 @@
             </tr>
         </thead>
         <tbody id="issuesTable">
-            <!-- Os dados das issues serão inseridos aqui via JavaScript -->
         </tbody>
-    </table>
+    </table> -->
 
     <script>
         async function fetchIssues() {
             try {
                 const response = await fetch('/api/issues');
                 const issues = await response.json();
-                const tableBody = document.getElementById('issuesTable');
+               /*  const tableBody = document.getElementById('issuesTable');
                 tableBody.innerHTML = '';
 
                 issues.forEach(issue => {
@@ -53,12 +60,34 @@
                         </tr>
                     `;
                     tableBody.innerHTML += row;
+                }); */
+
+                let regressionTests = issues.filter(issue => issue.related_topic === 'Regression Testing').length;
+                let refactoring = issues.filter(issue => issue.related_topic === 'Refactoring').length;
+                let both = issues.filter(issue => issue.related_topic === 'Both').length;
+                let none = issues.filter(issue => issue.related_topic === 'None').length;
+
+                const ctx = document.getElementById('myChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'pie', // Pode ser 'bar', 'line', 'doughnut', etc.
+                    data: {
+                        labels: ['Teste de Regressão', 'Refatoração', 'Ambas', 'Outros'],
+                        datasets: [{
+                            label: 'Quantidade de Issues',
+                            data: [regressionTests, refactoring, both, none],
+                            backgroundColor: ['#fed10a', '#343741', '#00bfb3', '#0077cc'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true
+                    }
                 });
+
             } catch (error) {
                 console.error('Erro ao carregar issues:', error);
             }
         }
-
         fetchIssues(); // Chama a função ao carregar a página
     </script>
 </body>
