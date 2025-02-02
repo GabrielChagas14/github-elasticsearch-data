@@ -71,3 +71,7 @@ th, td {
 html {
     scroll-behavior: smooth;
 }
+#myChart {
+    max-width: 300px;
+    max-height: 300px;
+}
