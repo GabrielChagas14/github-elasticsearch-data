@@ -42,40 +42,46 @@ function openModal(issue) {
 }
 // Método para preencher a tabela
 function fillTable(issues) {
+    const table = $('#issuesTable');
+    if ($.fn.DataTable.isDataTable(table)) {
+        table.DataTable().destroy(); // Destrói a instância existente
+    }
+
     const tableBody = document.querySelector('#issuesTable tbody');
-        tableBody.innerHTML = '';
+    tableBody.innerHTML = '';
 
-        issues.forEach(issue => {
-            const row = `
-                <tr>
-                    <td>${issue.issue_id}</td>
-                    <td>${issue.title}</td>
-                    <td>${issue.related_topic}</td>
-                    <td>${issue.closed_at}</td>
-                    <td><button class="view-issue" data-issue-id="${issue.issue_id}">mais</button></td>
-                </tr>
-            `;
-            tableBody.innerHTML += row;
-        });
+    issues.forEach(issue => {
+        const row = `
+            <tr>
+                <td>${issue.issue_id}</td>
+                <td>${issue.title}</td>
+                <td>${issue.related_topic}</td>
+                <td>${issue.closed_at}</td>
+                <td><button class="view-issue" data-issue-id="${issue.issue_id}">mais</button></td>
+            </tr>
+        `;
+        tableBody.innerHTML += row;
+    });
 
-        $('#issuesTable').DataTable({
-            paging: true,
-            pageLength: 10,
-            searching: true,
-            language: {
-                url: "/assets/language/pt-BR.json"
+    table.DataTable({
+        paging: true,
+        pageLength: 10,
+        searching: true,
+        destroy: true, // Garante que a tabela possa ser recriada
+        language: {
+            url: "/assets/language/pt-BR.json"
+        }
+    });
+
+    document.querySelectorAll('.view-issue').forEach(button => {
+        button.addEventListener('click', function() {
+            const issueId = this.getAttribute('data-issue-id');
+            const issue = issues.find(i => i.issue_id === issueId);
+            if (issue) {
+                openModal(issue);
             }
         });
-
-        document.querySelectorAll('.view-issue').forEach(button => {
-            button.addEventListener('click', function() {
-                const issueId = this.getAttribute('data-issue-id');
-                const issue = issues.find(i => i.issue_id === issueId);
-                if (issue) {
-                    openModal(issue);
-                }
-            });
-        });
+    });
 }
 
 // Método para gerar o gráfico de pizza
