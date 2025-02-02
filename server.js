@@ -13,10 +13,10 @@ const port = 3000;
 app.use(express.json());
 app.use('/api', issueRoutes);
 
-// Servindo arquivos estáticos da pasta "views"
 app.use(express.static(path.join(__dirname, 'views')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/resources', express.static(path.join(__dirname, 'resources')));
 
-// Servir o index.html na raiz "/"
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });

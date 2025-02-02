@@ -5,31 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Landing Page</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-        #myChart {
-            max-width: 300px;
-            max-height: 300px;
-        }
-    </style>
+    <link rel="stylesheet" href="/assets/style.css">
+    <script src="/resources/script.js"></script>
 </head>
 <body>
-    <h1>Sobre o Projeto</h1>
-    <p>Descrição breve do projeto...</p>
+    <div class="topbar">
+        <div class="logo">
+            <img src="/assets/images/elastic-logo.png">
+        </div>
+        <a href="#context">Contexto</a>
+        <a href="#resultados">Resultados</a>
+        <a href="#issues">Issues</a>
+    </div>
 
-    <h2>Resultados encontrados</h2>
-    <canvas id="myChart"></canvas>
+    <div id="context" class="context-section">
+        <div class="context-logo">
+            <img src="/assets/images/Elasticsearch_logo.svg.png" alt="Elasticsearch Logo">
+        </div>
+        <h1>Contexto</h1>
+        <p>
+            O Elasticsearch é um mecanismo de busca e análise RESTful open source distribuído, 
+            armazenamento de dados escalável e banco de dados de vetores capaz de atender a um 
+            número crescente de casos de uso. Como elemento central do Elastic Stack, ele 
+            armazena seus dados centralmente para proporcionar busca rápida, relevância com 
+            ajuste fino e analítica poderosa que pode ser ampliada com facilidade.
+        </p>
+    </div>
 
-    <h2>Lista de Issues</h2>
-   <!--  <table>
+    <div id="resultados">
+        <h2>Resultados</h2>
+        <p>Aqui você pode adicionar os resultados do projeto.</p>
+        <canvas id="myChart"></canvas>
+    </div>
+    
+    <h2 id="issues">Lista de Issues</h2>
+    <table>
         <thead>
             <tr>
                 <th>ID</th>
@@ -40,55 +50,7 @@
         </thead>
         <tbody id="issuesTable">
         </tbody>
-    </table> -->
 
-    <script>
-        async function fetchIssues() {
-            try {
-                const response = await fetch('/api/issues');
-                const issues = await response.json();
-               /*  const tableBody = document.getElementById('issuesTable');
-                tableBody.innerHTML = '';
-
-                issues.forEach(issue => {
-                    const row = `
-                        <tr>
-                            <td>${issue.issue_id}</td>
-                            <td>${issue.title}</td>
-                            <td>${issue.body}</td>
-                            <td>${issue.status}</td>
-                        </tr>
-                    `;
-                    tableBody.innerHTML += row;
-                }); */
-
-                let regressionTests = issues.filter(issue => issue.related_topic === 'Regression Testing').length;
-                let refactoring = issues.filter(issue => issue.related_topic === 'Refactoring').length;
-                let both = issues.filter(issue => issue.related_topic === 'Both').length;
-                let none = issues.filter(issue => issue.related_topic === 'None').length;
-
-                const ctx = document.getElementById('myChart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'pie', // Pode ser 'bar', 'line', 'doughnut', etc.
-                    data: {
-                        labels: ['Teste de Regressão', 'Refatoração', 'Ambas', 'Outros'],
-                        datasets: [{
-                            label: 'Quantidade de Issues',
-                            data: [regressionTests, refactoring, both, none],
-                            backgroundColor: ['#fed10a', '#343741', '#00bfb3', '#0077cc'],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true
-                    }
-                });
-
-            } catch (error) {
-                console.error('Erro ao carregar issues:', error);
-            }
-        }
-        fetchIssues(); // Chama a função ao carregar a página
-    </script>
+    </table>
 </body>
 </html>
