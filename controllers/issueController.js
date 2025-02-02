@@ -63,6 +63,8 @@ class IssueController {
                         title: issue.title,
                         body: issue.body,
                         related_topic: issue.related_topic,
+                        created_at: issue.created_at,
+                        closed_at: issue.closed_at,
                     }
             });
         

@@ -14,7 +14,7 @@ class IssueModel {
     }
     async getAllIssues() {
         try {
-            const query = 'SELECT * FROM issue';
+            const query = 'SELECT * FROM issue Order by created_at asc';
             const result = await pool.query(query);
             return result;
         } catch (error) {
