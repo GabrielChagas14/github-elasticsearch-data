@@ -4,23 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Landing Page</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-    </style>
+    <link rel="stylesheet" href="/assets/style.css">
+    <script src="/resources/script.js"></script>
 </head>
 <body>
-    <h1>Sobre o Projeto</h1>
-    <p>Descrição breve do projeto...</p>
+    <div class="topbar">
+        <div class="logo">
+            <img src="/assets/images/elastic-logo.png">
+        </div>
+        <a href="#context">Contexto</a>
+        <a href="#resultados">Resultados</a>
+        <a href="#issues">Issues</a>
+    </div>
 
-    <h2>Lista de Issues</h2>
+    <div id="context" class="context-section">
+        <div class="context-logo">
+            <img src="/assets/images/Elasticsearch_logo.svg.png" alt="Elasticsearch Logo">
+        </div>
+        <h1>Contexto</h1>
+        <p>
+            O Elasticsearch é um mecanismo de busca e análise RESTful open source distribuído, 
+            armazenamento de dados escalável e banco de dados de vetores capaz de atender a um 
+            número crescente de casos de uso. Como elemento central do Elastic Stack, ele 
+            armazena seus dados centralmente para proporcionar busca rápida, relevância com 
+            ajuste fino e analítica poderosa que pode ser ampliada com facilidade.
+        </p>
+    </div>
+
+    <div id="resultados">
+        <h2>Resultados</h2>
+        <p>Aqui você pode adicionar os resultados do projeto.</p>
+    </div>
+    
+    <h2 id="issues">Lista de Issues</h2>
     <table>
         <thead>
             <tr>
@@ -34,32 +50,5 @@
             <!-- Os dados das issues serão inseridos aqui via JavaScript -->
         </tbody>
     </table>
-
-    <script>
-        async function fetchIssues() {
-            try {
-                const response = await fetch('/api/issues');
-                const issues = await response.json();
-                const tableBody = document.getElementById('issuesTable');
-                tableBody.innerHTML = '';
-
-                issues.forEach(issue => {
-                    const row = `
-                        <tr>
-                            <td>${issue.issue_id}</td>
-                            <td>${issue.title}</td>
-                            <td>${issue.body}</td>
-                            <td>${issue.status}</td>
-                        </tr>
-                    `;
-                    tableBody.innerHTML += row;
-                });
-            } catch (error) {
-                console.error('Erro ao carregar issues:', error);
-            }
-        }
-
-        fetchIssues(); // Chama a função ao carregar a página
-    </script>
 </body>
 </html>
