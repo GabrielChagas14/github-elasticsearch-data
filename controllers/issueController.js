@@ -52,25 +52,25 @@ class IssueController {
     }
     
 
-    getIssues(req, res) {
-        // const issuesObject = issueModel.getAllIssues();
-        // const issues = issuesObject.rows;
+    async getIssues(req, res) {
+        try {
+            const issuesObject = await issueModel.getAllIssues();
+            const issues = issuesObject.rows;
 
-        // const issueJson = issues.map(issue => {  
-        //     return {
-        //             issue_id: issue.issue_id,
-        //             title: issue.title,
-        //             body: issue.body,
-        //             status: issue.status,
-        //         }
-        // });
-    const issues = [
-        { id: 1, title: 'Issue 1', description: 'Descrição da issue 1' },
-        { id: 2, title: 'Issue 2', description: 'Descrição da issue 2' }
-      ];
-    
+            const issueJson = issues.map(issue => {  
+                return {
+                        issue_id: issue.issue_id,
+                        title: issue.title,
+                        body: issue.body,
+                        status: issue.analysis,
+                    }
+            });
         
-        res.json(issueJson);
+            res.json(issueJson);
+        } catch (error) {
+            console.error("Erro ao obter issues:", error);
+            res.status(500).json({ error: "Erro ao buscar issues" });
+        }
     }
 
     calculateResolutionTimeDays(created_at, closed_at) {
