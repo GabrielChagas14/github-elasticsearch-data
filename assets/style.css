@@ -2,17 +2,6 @@ body {
     font-family: Inter,Arial,sans-serif;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: left;
-}
-
 .topbar {
     width: 100%;
     display: flex;
@@ -71,7 +60,13 @@ th, td {
 html {
     scroll-behavior: smooth;
 }
+
 #myChart {
     max-width: 300px;
     max-height: 300px;
+}
+
+.issues-section {
+    padding-right: 50px;
+    padding-left: 50px;
 }
