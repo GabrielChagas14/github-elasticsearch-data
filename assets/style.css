@@ -29,18 +29,22 @@ body {
     padding: 20px;
 }
 
-.context-section h1 {
+.context-section h1, #resultados h2, #resultados h1 {
     font-size: 32px;
     font-weight: bold;
     color: #333;
 }
 
-.context-section p {
+p {
     font-size: 18px;
     color: #666;
     line-height: 1.6;
     max-width: 700px;
     margin: 0 auto;
+}
+
+h1,h2,h3 {
+    color: #666;
 }
 
 .context-logo {
@@ -66,7 +70,10 @@ html {
     flex-direction: column;
     flex-wrap: wrap;
     gap: 20px;
-    margin-top: 20px;
+}
+
+#resultados > p {
+    margin-bottom: 60px;
 }
 #all-Issues {
     max-width: 300px;
