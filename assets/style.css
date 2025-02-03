@@ -8,11 +8,16 @@ html, body {
 }
 
 .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     display: flex;
     align-items: center;
     background-color: #f9fbfc;
     padding: 10px 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
 }
 
 .topbar a {
@@ -34,7 +39,7 @@ html, body {
     padding: 20px;
 }
 
-.context-section h1, #resultados h2, #resultados h1 {
+h1, #resultados h2, #resultados h1 {
     font-size: 32px;
     font-weight: bold;
     color: #333;
@@ -46,10 +51,6 @@ p {
     line-height: 1.6;
     max-width: 700px;
     margin: 0 auto;
-}
-
-h1,h2,h3 {
-    color: #666;
 }
 
 .context-logo {
@@ -72,13 +73,6 @@ h1,h2,h3 {
     flex-direction: column;
     flex-wrap: wrap;
     gap: 20px;
-}
-
-#resultados > p {
-    margin-bottom: 60px;
-    margin-top: 20px;
-    margin-left: 10px;
-    margin-right: 10px;
 }
 
 #issues {
