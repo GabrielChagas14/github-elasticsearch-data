@@ -1,10 +1,13 @@
 async function fetchIssues() {
     try {
-        const response = await fetch('/api/issues');
-        const issues = await response.json();
+        const issuesResponse = await fetch('/api/issues');
+        const issues = await issuesResponse.json();
+
+        const commentsResponse = await fetch('/api/comments');
+        const comments = await commentsResponse.json();
         
         // Preencher a tabela
-        fillTable(issues);
+        fillTable(issues, comments);
         
         // Gerar gráfico de pizza
         generatePieChart(issues);
@@ -17,23 +20,67 @@ async function fetchIssues() {
     }
 }
 
-function openModal(issue) {
+function openModal(issue, comments) {
+    const closedAtDate = new Date(issue.closed_at);
+    const formattedClosedDate = closedAtDate.toLocaleDateString('pt-BR');
+    const createdAtDate = new Date(issue.created_at);
+    const formattedCreatedDate = createdAtDate.toLocaleDateString('pt-BR');
+
     document.getElementById('modal-issue-id').innerText = issue.issue_id;
     document.getElementById('modal-title').innerText = issue.title;
     document.getElementById('modal-body').innerText = issue.body;
     document.getElementById('modal-related-topic').innerText = issue.related_topic;
-    document.getElementById('modal-closed-at').innerText = issue.closed_at;
-    document.getElementById('modal-created-at').innerText = issue.created_at;
+    document.getElementById('modal-closed-at').innerText = formattedClosedDate;
+    document.getElementById('modal-created-at').innerText = formattedCreatedDate;
     document.getElementById('modal-resolution-time').innerText = issue.resolution_time;
     document.getElementById('modal-author').innerText = issue.author;
     document.getElementById('modal-analysis').innerText = issue.analysis;
     document.getElementById('issueModal').style.display = "block";
+
+    let html = "";
+    comments.forEach(comment => {
+        const closedAtDate = new Date(comment.created_at);
+        const formattedClosedDate = closedAtDate.toLocaleDateString('pt-BR');
+
+        let bodyContent = comment.body;
+
+        // Remover links (URLs começando com http:// ou https://)
+        bodyContent = bodyContent.replace(/https?:\/\/[^\s]+/g, '');
+
+        // Remover imagens (tags <img>)
+        bodyContent = bodyContent.replace(/<img[^>]*>/g, '');
+
+        // Remover caracteres especiais, exceto os permitidos (/ ( ) [ ])
+        bodyContent = bodyContent.replace(/[^a-zA-Z0-9áéíóúàèìòùãõçÁÉÍÓÚÀÈÌÒÙÃÕÇ/\(\)\s]/g, '');
+        
+        html += `
+            <div class="comment-section">
+                <div class="row">
+                    <p class="column">
+                        <strong>Id do comentário:</strong> ${comment.comment_id}
+                    </p>
+                    <p class="column">
+                        <strong>Autor:</strong> ${comment.author}
+                    </p>
+                    <p class="column">
+                        <strong>Data de criação:</strong> ${formattedClosedDate}
+                    </p>
+                </div>
+                <div class="row">
+                    <p class="column">
+                        <strong>Comentário:</strong> ${bodyContent}
+                    </p>
+                </div>
+            </div>
+        `;
+    });
+    document.getElementById('modal-comment-section').innerHTML = html;
 }
-// Método para preencher a tabela
-function fillTable(issues) {
+
+function fillTable(issues, comments) {
     const table = $('#issuesTable');
     if ($.fn.DataTable.isDataTable(table)) {
-        table.DataTable().destroy(); // Destrói a instância existente
+        table.DataTable().destroy();
     }
 
     const tableBody = document.querySelector('#issuesTable tbody');
@@ -48,7 +95,7 @@ function fillTable(issues) {
                 <td>${issue.title}</td>
                 <td>${issue.related_topic}</td>
                 <td>${formattedClosedDate}</td>
-                <td><button class="view-issue" data-issue-id="${issue.issue_id}">mais</button></td>
+                <td><button class="view-issue" data-issue-id="${issue.issue_id}"><i class="fa-solid fa-magnifying-glass"></i></button></td>
             </tr>
         `;
         tableBody.innerHTML += row;
@@ -58,7 +105,7 @@ function fillTable(issues) {
         paging: true,
         pageLength: 10,
         searching: true,
-        destroy: true, // Garante que a tabela possa ser recriada
+        destroy: true,
         language: {
             url: "/assets/language/pt-BR.json"
         }
@@ -69,13 +116,14 @@ function fillTable(issues) {
             const issueId = this.getAttribute('data-issue-id');
             const issue = issues.find(i => i.issue_id === issueId);
             if (issue) {
-                openModal(issue);
+                const filteredComments = comments.filter(comment => comment.issue_id === issue.issue_id);
+                console.log(filteredComments);
+                openModal(issue, filteredComments);
             }
         });
     });
 }
 
-// Método para gerar o gráfico de pizza
 function generatePieChart(issues) {
     let regressionTests = issues.filter(issue => issue.related_topic === 'Regression Testing').length;
     let refactoring = issues.filter(issue => issue.related_topic === 'Refactoring').length;
@@ -100,7 +148,6 @@ function generatePieChart(issues) {
     });
 }
 
-// Método para gerar o gráfico de linha
 function generateLineChart(issues) {
     const weeklyData = { regressionTests: [], refactoring: [], labels: [] };
 

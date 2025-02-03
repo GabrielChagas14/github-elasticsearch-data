@@ -24,6 +24,19 @@ class CommentModel {
             return []; // Retorna um array vazio para evitar erro no .map()
         }
     }
+
+    getAllComments() {
+        try {
+            const result = pool.query(
+                `SELECT * FROM comment c`
+            );
+    
+            return result;
+        } catch (error) {
+            console.error("Error fetching comments:", error);
+            return [];
+        }
+    }
 }
 
 export default new CommentModel();

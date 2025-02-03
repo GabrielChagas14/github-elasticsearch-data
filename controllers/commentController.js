@@ -27,7 +27,7 @@ class CommentController {
         }
     }
 
-     async getComments(issue_id) {
+    async getComments(issue_id) {
         
             const commentsObject = await commentModel.getComments(issue_id);
             if (!commentsObject || commentsObject.length === 0) {
@@ -40,6 +40,34 @@ class CommentController {
                 `author: ${comment.author}\ncomment: ${comment.comment_body}`
             ).join('\n\n');
     
+    }
+
+    async getAllComments(req, res) {
+        try {
+            const commentsObject = await commentModel.getAllComments();
+            if (!commentsObject || commentsObject.length === 0) {
+                return "No comments available."; // Retorno seguro se não houver comentários
+            }
+            
+            const comments = commentsObject.rows;
+
+            const commentsJson = comments.map(comment => {  
+
+
+                return {
+                        comment_id: comment.comment_id,
+                        issue_id: comment.issue_id,
+                        author: comment.author,
+                        body: comment.body,
+                        created_at: comment.created_at,
+                    }
+            });
+        
+            res.json(commentsJson);
+        } catch (error) {
+            console.error("Erro ao obter comments:", error);
+            res.status(500).json({ error: "Erro ao buscar comments" });
+        }
     }
     
 

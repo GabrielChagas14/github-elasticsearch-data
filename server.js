@@ -2,7 +2,8 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import issueRoutes from './routes/issueRoutes.js';  // Mudança para import
+import issueRoutes from './routes/issueRoutes.js';
+import commentRoutes from './routes/commentRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,6 +13,7 @@ const port = 3000;
 
 app.use(express.json());
 app.use('/api', issueRoutes);
+app.use('/api', commentRoutes);
 
 app.use(express.static(path.join(__dirname, 'views')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
