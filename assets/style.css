@@ -1,5 +1,10 @@
-body {
+html, body {
     font-family: Inter,Arial,sans-serif;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 .topbar {
@@ -57,9 +62,6 @@ body {
     margin-right: 8px;
 }
 
-html {
-    scroll-behavior: smooth;
-}
 #resultados {
     display: flex;
     align-items: center;
@@ -67,7 +69,18 @@ html {
     flex-wrap: wrap;
     gap: 20px;
     margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
+
+#issues {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
 #all-Issues {
     max-width: 300px;
     max-height: 300px;

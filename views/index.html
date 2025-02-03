@@ -12,6 +12,8 @@
 
     <link rel="stylesheet" href="/assets/style.css">
     <link rel="stylesheet" href="/assets/modal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <script src="/resources/script.js"></script>
 </head>
 <body>
@@ -39,14 +41,14 @@
     </div>
 
     <div id="resultados">
-        <h2>Resultados</h2>
+        <h1>Resultados</h1>
         <p>Aqui você pode adicionar os resultados do projeto.</p>
         <canvas id="all-Issues"></canvas>
         <canvas id="weekly-Issues"></canvas>
     </div>
 
-    <div id="issues" class="issues-section">
-        <h2 >Lista de Issues</h2>
+    <div id="issues">
+        <h1 >Lista de Issues</h1>
         <table id="issuesTable" class="display">
             <thead>
                 <tr>
@@ -66,16 +68,18 @@
     <div id="issueModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Detalhes da Issue</h2>
+            <h1>Detalhes da Issue</h1>
             <p><strong>Id:</strong> <span id="modal-issue-id"></span></p>
             <p><strong>Título:</strong> <span id="modal-title"></span></p>
             <p><strong>Descrição:</strong> <span id="modal-body"></span></p>
             <p><strong>Classificação:</strong> <span id="modal-related-topic"></span></p>
-            <p><strong>Data de fechamento:</strong> <span id="modal-closed-at"></span></p>
             <p><strong>Data de criação:</strong> <span id="modal-created-at"></span></p>
+            <p><strong>Data de fechamento:</strong> <span id="modal-closed-at"></span></p>
             <p><strong>Tempo de resolução em dias:</strong> <span id="modal-resolution-time"></span></p>
             <p><strong>Autor:</strong> <span id="modal-author"></span></p>
             <p><strong>Análise:</strong> <span id="modal-analysis"></span></p>
+            <p><strong>Comentários:</strong></p>
+            <div id="modal-comment-section"></div>
         </div>
     </div>
 </body>
