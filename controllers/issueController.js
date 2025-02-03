@@ -59,18 +59,14 @@ class IssueController {
 
             const issueJson = issues.map(issue => {  
 
-                const closedAtDate = new Date(issue.closed_at);
-                const createdAtDate = new Date(issue.created_at);
-                const formattedClosedDate = closedAtDate.toLocaleDateString('pt-BR');
-                const formattedCreatedDate = createdAtDate.toLocaleDateString('pt-BR');
 
                 return {
                         issue_id: issue.issue_id,
                         title: issue.title,
                         body: issue.body,
                         related_topic: issue.related_topic,
-                        closed_at: formattedClosedDate,
-                        created_at: formattedCreatedDate,
+                        closed_at: issue.closed_at,
+                        created_at: issue.created_at,
                         resolution_time: issue.resolution_time_days,
                         author: issue.author,
                         analysis: issue.analysis,

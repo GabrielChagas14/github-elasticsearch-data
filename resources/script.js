@@ -1,14 +1,3 @@
-document.addEventListener("DOMContentLoaded", function() {
-    fetchIssues();
-
-    const closeButton = document.querySelector('.close');
-    if (closeButton) {
-        closeButton.addEventListener('click', function() {
-            document.getElementById('issueModal').style.display = "none";
-        });
-    }
-});
-
 async function fetchIssues() {
     try {
         const response = await fetch('/api/issues');
@@ -51,12 +40,14 @@ function fillTable(issues) {
     tableBody.innerHTML = '';
 
     issues.forEach(issue => {
+                const closedAtDate = new Date(issue.closed_at);
+                const formattedClosedDate = closedAtDate.toLocaleDateString('pt-BR');
         const row = `
             <tr>
                 <td>${issue.issue_id}</td>
                 <td>${issue.title}</td>
                 <td>${issue.related_topic}</td>
-                <td>${issue.closed_at}</td>
+                <td>${formattedClosedDate}</td>
                 <td><button class="view-issue" data-issue-id="${issue.issue_id}">mais</button></td>
             </tr>
         `;
@@ -176,5 +167,14 @@ function generateLineChart(issues) {
 
 
 
+// document.addEventListener("DOMContentLoaded", fetchIssues);
+document.addEventListener("DOMContentLoaded", function() {
+    fetchIssues();
 
-document.addEventListener("DOMContentLoaded", fetchIssues);
+    const closeButton = document.querySelector('.close');
+    if (closeButton) {
+        closeButton.addEventListener('click', function() {
+            document.getElementById('issueModal').style.display = "none";
+        });
+    }
+});
