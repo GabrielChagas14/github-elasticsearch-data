@@ -212,11 +212,75 @@ function generateLineChart(issues) {
     });
 }
 
+function generateColumnChart(classification) {
+    const classificationCounts = classification.reduce((acc, item) => {
+        acc[item.classification] = (acc[item.classification] || 0) + 1;
+        return acc;
+    }, {});
+
+    // Extraindo rótulos e valores
+    const labels = Object.keys(classificationCounts);
+    const data = Object.values(classificationCounts);
+
+    // Configuração do gráfico
+    const ctx = document.getElementById('classificationChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar', // Gráfico de colunas
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Número de Colaboradores',
+                data: data,
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                }
+            }
+        }
+    });
+}
+
+async function fetchClassification() {
+    try {
+        const classificationResponse = await fetch('/api/classification');
+        const classification = await classificationResponse.json();
+        
+        generateColumnChart(classification)
+        
+    } catch (error) {
+        console.error('Erro ao carregar classificações:', error);
+    }
+}
 
 
 // document.addEventListener("DOMContentLoaded", fetchIssues);
 document.addEventListener("DOMContentLoaded", function() {
     fetchIssues();
+    fetchClassification();
 
     const closeButton = document.querySelector('.close');
     if (closeButton) {

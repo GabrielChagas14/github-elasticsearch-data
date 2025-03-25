@@ -41,3 +41,19 @@ CREATE TABLE issue_label (
   FOREIGN KEY (label_id) REFERENCES label(label_id) ON DELETE CASCADE
 );
 
+CREATE TABLE github_contributors (
+            id SERIAL PRIMARY KEY,
+            github_id INT UNIQUE,
+            login TEXT,
+            contributions INT,
+            languages TEXT,
+            languages_used TEXT,
+            recent_languages TEXT
+);
+
+CREATE TABLE github_contributors_classification (
+            id SERIAL PRIMARY KEY,
+            github_id INT UNIQUE,
+            login TEXT,
+            classification TEXT
+);

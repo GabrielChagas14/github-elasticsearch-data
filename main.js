@@ -7,7 +7,6 @@ const main = async () => {
  /*  seedDatabase(); */
  /* const prompts = await issueController.createPrompts();
  await updateIssuesClassification(prompts); */
-
  startServer();
  
 };
