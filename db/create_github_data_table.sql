@@ -46,9 +46,7 @@ CREATE TABLE github_contributors (
             github_id INT UNIQUE,
             login TEXT,
             contributions INT,
-            languages TEXT,
-            languages_used TEXT,
-            recent_languages TEXT
+            languages TEXT
 );
 
 CREATE TABLE github_contributors_classification (
